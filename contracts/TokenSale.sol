@@ -80,9 +80,9 @@ contract TokenSale is Ownable {
 			return 0;
 		}
 
-		uint distributionStartTime = startDate + SALE_DURATION + 1 weeks;
+		uint distributionStartTime = getDistributionStartTime();
 
-		for(uint i = distributionStartTime; i < distributionStartTime + 10 weeks; i+= 1 weeks) {
+		for(uint i = distributionStartTime; i < getDistributionEndTime(); i+= 1 weeks) {
             if(i > block.timestamp) {
                 break;
             }
@@ -91,6 +91,10 @@ contract TokenSale is Ownable {
 
 		res = res.sub(claimed[_userAddress]);
 	}
+	
+	function getRemainingTokens(address _userAddress) public view returns(uint) {
+	    return balances[_userAddress].sub(claimed[_userAddress]);
+	}
 
 	function getCurrentExchangeRate() public view returns(uint) {
 		if(startDate < block.timestamp && block.timestamp < startDate + SALE_DURATION) {
@@ -98,6 +102,14 @@ contract TokenSale is Ownable {
 		}
 		
 		return 0;
+	}
+	
+	function getDistributionStartTime() public view returns(uint) {
+	    return startDate + SALE_DURATION + 1 weeks;
+	}
+	
+	function getDistributionEndTime() public view returns(uint) {
+	    return getDistributionStartTime() + 10 weeks;
 	}
 	
 	// -----------------------------------------------
