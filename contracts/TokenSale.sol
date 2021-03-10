@@ -59,7 +59,7 @@ contract TokenSale is Ownable {
 		LMT.transfer(msg.sender, toSend);
 		balances[msg.sender] = balances[msg.sender].add(toSend);
 		lmtTokensLocked = lmtTokensLocked.add(toSend);
-		tokensSold = tokensSold.add(toSend);
+		tokensSold = tokensSold.add(toSend.mul(2));
 		emit Bought(msg.sender, 1, _lymAmount);
 	}
 
