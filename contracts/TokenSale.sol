@@ -5,30 +5,30 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/erc20/IERC20.sol";
 
+abstract contract LMTBasic is IERC20 {
+	function addLocked(address _userAddress, uint _locked) virtual public;
+}
+
 contract TokenSale is Ownable {
     
     using SafeMath for uint;
 
 	uint public constant SALE_DURATION = 1 days;
+	uint public constant EXCHANGE_RATIO = 8;
 
 	IERC20 public LYM;
-	IERC20 public LMT;
+	LMTBasic public LMT;
 
 	uint public lymCollected;
 	uint public tokensSold;
 
 	// Stage 1
 	uint public startDate;
-	uint public EXCHANGE_RATIO = 8;
-	mapping(address => uint) public balances;
-	mapping(address => uint) public claimed;
-	
-	uint public lmtTokensLocked;
 
 	address public wallet1Receiver;
 	address public wallet2Receiver;
 
-	event Bought(address indexed user, uint indexed stage, uint indexed lymAmount);
+	event Bought(address indexed user, uint indexed lymAmount, uint lmtAmount);
 	event Claimed(address indexed user, uint lmtAmount);
 
 	constructor(
@@ -43,7 +43,7 @@ contract TokenSale is Ownable {
 		startDate = _startDate;
 
 		LYM = IERC20(_lymAddress);
-		LMT = IERC20(_lmtAddress);
+		LMT = LMTBasic(_lmtAddress);
 		
 		wallet1Receiver = _wallet1Receiver;
 		wallet2Receiver = _wallet2Receiver;
@@ -55,62 +55,65 @@ contract TokenSale is Ownable {
 		require(LYM.transferFrom(msg.sender, owner(), _lymAmount));
 		lymCollected = lymCollected.add(_lymAmount);
 		
-		uint toSend = _lymAmount.div(EXCHANGE_RATIO).div(2);
-		LMT.transfer(msg.sender, toSend);
-		balances[msg.sender] = balances[msg.sender].add(toSend);
-		lmtTokensLocked = lmtTokensLocked.add(toSend);
-		tokensSold = tokensSold.add(toSend.mul(2));
-		emit Bought(msg.sender, 1, _lymAmount);
+		uint lmtAmount = _lymAmount.div(EXCHANGE_RATIO);
+		LMT.addLocked(msg.sender, lmtAmount * 2 / 3);
+		LMT.transfer(msg.sender, lmtAmount);
+
+
+		// balances[msg.sender] = balances[msg.sender].add(toSend);
+		// lmtTokensLocked = lmtTokensLocked.add(toSend);
+		tokensSold = tokensSold.add(lmtAmount);
+		emit Bought(msg.sender, _lymAmount, lmtAmount);
 	}
 
-	function claim() public {
-		uint toClaim = tokensToClaim(msg.sender);
-		claimed[msg.sender] = claimed[msg.sender].add(toClaim);
+	// function claim() public {
+	// 	uint toClaim = tokensToClaim(msg.sender);
+	// 	claimed[msg.sender] = claimed[msg.sender].add(toClaim);
 		
-		require(toClaim > 0, "nothing to claim");
-		LMT.transfer(msg.sender, toClaim);
-        lmtTokensLocked = lmtTokensLocked.sub(toClaim);
+	// 	require(toClaim > 0, "nothing to claim");
+	// 	LMT.transfer(msg.sender, toClaim);
+ //        // lmtTokensLocked = lmtTokensLocked.sub(toClaim);
 
-		emit Claimed(msg.sender, toClaim);
-	}
+	// 	emit Claimed(msg.sender, toClaim);
+	// }
 
-	function tokensToClaim(address _userAddress) public view returns(uint res) {
-		uint userBalance = balances[_userAddress];
-		if(userBalance == 0) {
-			return 0;
-		}
+	// function tokensToClaim(address _userAddress) public view returns(uint res) {
+	// 	uint userBalance = balances[_userAddress];
+	// 	if(userBalance == 0) {
+	// 		return 0;
+	// 	}
 
-		uint distributionStartTime = getDistributionStartTime();
+	// 	uint distributionStartTime = getDistributionStartTime();
 
-		for(uint i = distributionStartTime; i < getDistributionEndTime(); i+= 1 weeks) {
-            if(i > block.timestamp) {
-                break;
-            }
-			res = res.add(userBalance).div(10);
-		}
+	// 	for(uint i = distributionStartTime; i < getDistributionEndTime(); i+= 1 weeks) {
+ //            if(i > block.timestamp) {
+ //                break;
+ //            }
+	// 		res = res.add(userBalance).div(10);
+	// 	}
 
-		res = res.sub(claimed[_userAddress]);
-	}
+	// 	res = res.sub(claimed[_userAddress]);
+	// }
 	
-	function getRemainingTokens(address _userAddress) public view returns(uint) {
-	    return balances[_userAddress].sub(claimed[_userAddress]);
-	}
+	// function getRemainingTokens(address _userAddress) public view returns(uint) {
+	//     return balances[_userAddress].sub(claimed[_userAddress]);
+	// }
 
-	function getCurrentExchangeRate() public view returns(uint) {
-		if(startDate < block.timestamp && block.timestamp < startDate + SALE_DURATION) {
-			return EXCHANGE_RATIO;
-		}
+	// function getCurrentExchangeRate() public view returns(uint) {
+	// 	if(startDate < block.timestamp && block.timestamp < startDate + SALE_DURATION) {
+	// 		return EXCHANGE_RATIO;
+	// 	}
 		
-		return 0;
-	}
+	// 	return 0;
+	// }
 	
-	function getDistributionStartTime() public view returns(uint) {
-	    return startDate + SALE_DURATION + 1 weeks;
-	}
+	// function getDistributionStartTime() public view returns(uint) {
+	//     return startDate + SALE_DURATION + 1 weeks;
+	// }
 	
-	function getDistributionEndTime() public view returns(uint) {
-	    return getDistributionStartTime() + 10 weeks;
-	}
+	// function getDistributionEndTime() public view returns(uint) {
+	//     return getDistributionStartTime() + 10 weeks;
+	// }
 	
 	// -----------------------------------------------
 	// --------------Owner functions------------------
@@ -120,10 +123,9 @@ contract TokenSale is Ownable {
 		require(block.timestamp > startDate + SALE_DURATION, "not a finish time");
 
 		uint balance = LMT.balanceOf(address(this));
-		uint toTransfer = balance.sub(lmtTokensLocked);
 
-		LMT.transfer(wallet1Receiver, toTransfer/3);
-		LMT.transfer(wallet2Receiver, toTransfer*2/3);
+		LMT.transfer(wallet1Receiver, balance/3);
+		LMT.transfer(wallet2Receiver, balance*2/3);
 	}
 
 	function withdrawLostTokens(address _tokenAddress) public onlyOwner {
