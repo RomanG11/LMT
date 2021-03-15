@@ -56,65 +56,13 @@ contract TokenSale is Ownable {
 		lymCollected = lymCollected.add(_lymAmount);
 		
 		uint lmtAmount = _lymAmount.div(EXCHANGE_RATIO);
-		LMT.addLocked(msg.sender, lmtAmount * 2 / 3);
+		LMT.addLocked(msg.sender, lmtAmount.mul(2).div(3));
 		LMT.transfer(msg.sender, lmtAmount);
 
-
-		// balances[msg.sender] = balances[msg.sender].add(toSend);
-		// lmtTokensLocked = lmtTokensLocked.add(toSend);
 		tokensSold = tokensSold.add(lmtAmount);
 		emit Bought(msg.sender, _lymAmount, lmtAmount);
 	}
 
-	// function claim() public {
-	// 	uint toClaim = tokensToClaim(msg.sender);
-	// 	claimed[msg.sender] = claimed[msg.sender].add(toClaim);
-		
-	// 	require(toClaim > 0, "nothing to claim");
-	// 	LMT.transfer(msg.sender, toClaim);
- //        // lmtTokensLocked = lmtTokensLocked.sub(toClaim);
-
-	// 	emit Claimed(msg.sender, toClaim);
-	// }
-
-	// function tokensToClaim(address _userAddress) public view returns(uint res) {
-	// 	uint userBalance = balances[_userAddress];
-	// 	if(userBalance == 0) {
-	// 		return 0;
-	// 	}
-
-	// 	uint distributionStartTime = getDistributionStartTime();
-
-	// 	for(uint i = distributionStartTime; i < getDistributionEndTime(); i+= 1 weeks) {
- //            if(i > block.timestamp) {
- //                break;
- //            }
-	// 		res = res.add(userBalance).div(10);
-	// 	}
-
-	// 	res = res.sub(claimed[_userAddress]);
-	// }
-	
-	// function getRemainingTokens(address _userAddress) public view returns(uint) {
-	//     return balances[_userAddress].sub(claimed[_userAddress]);
-	// }
-
-	// function getCurrentExchangeRate() public view returns(uint) {
-	// 	if(startDate < block.timestamp && block.timestamp < startDate + SALE_DURATION) {
-	// 		return EXCHANGE_RATIO;
-	// 	}
-		
-	// 	return 0;
-	// }
-	
-	// function getDistributionStartTime() public view returns(uint) {
-	//     return startDate + SALE_DURATION + 1 weeks;
-	// }
-	
-	// function getDistributionEndTime() public view returns(uint) {
-	//     return getDistributionStartTime() + 10 weeks;
-	// }
-	
 	// -----------------------------------------------
 	// --------------Owner functions------------------
 	// -----------------------------------------------
