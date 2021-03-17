@@ -675,12 +675,13 @@ contract LMT is ERC20, Ownable {
     
     using SafeMath for uint;
 
+    uint public saleFinishDate;
     uint public firstUnlockDate;
     uint public secondUnlockDate;
 
     address public distributionContract;
 
-    mapping(address => uint) locked;
+    mapping(address => uint) public locked;
     mapping(address => bool) public pools;
 
     constructor() public ERC20("Lympo Market Token", "LMT") {
@@ -709,14 +710,20 @@ contract LMT is ERC20, Ownable {
         locked[_userAddress] = locked[_userAddress].add(_locked);
     }
 
-    function setUnlockDates(uint _firstUnlockDate, uint _secondUnlockDate) public onlyOwner {
+    function setUnlockDates(uint _saleFinishDate, uint _firstUnlockDate, uint _secondUnlockDate) public onlyOwner {
         require(firstUnlockDate == 0, "already set");
-        require(_secondUnlockDate > _firstUnlockDate, "invalid input");
+
+        require(_saleFinishDate < _firstUnlockDate && _firstUnlockDate < _secondUnlockDate, "invalid input");
+        saleFinishDate = _saleFinishDate;
         firstUnlockDate = _firstUnlockDate;
         secondUnlockDate = _secondUnlockDate;
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal override {
+        if(from == address(0)) {
+            return;
+        }
+        
         uint available;
 
         if(pools[to]) {
@@ -725,7 +732,7 @@ contract LMT is ERC20, Ownable {
             available = balanceOf(from);
         }
 
-        require(amount >= available, "not enough balance");
+        require(amount <= available, "not enough balance");
     }
 
     function getLocked(address _userAddress) public view returns(uint) {
@@ -734,7 +741,11 @@ contract LMT is ERC20, Ownable {
         }
 
         if(block.timestamp > firstUnlockDate) {
-            return locked[_userAddress] / 2;
+            return locked[_userAddress] / 3;
+        }
+
+        if(block.timestamp > saleFinishDate) {
+            return locked[_userAddress] * 2 / 3;
         }
 
         return locked[_userAddress];

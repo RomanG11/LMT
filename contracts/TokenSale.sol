@@ -13,7 +13,7 @@ contract TokenSale is Ownable {
     
     using SafeMath for uint;
 
-	uint public constant SALE_DURATION = 1 days;
+	uint public constant SALE_DURATION = 3 days;
 	uint public constant EXCHANGE_RATIO = 8;
 
 	IERC20 public LYM;
@@ -56,7 +56,7 @@ contract TokenSale is Ownable {
 		lymCollected = lymCollected.add(_lymAmount);
 		
 		uint lmtAmount = _lymAmount.div(EXCHANGE_RATIO);
-		LMT.addLocked(msg.sender, lmtAmount.mul(2).div(3));
+		LMT.addLocked(msg.sender, lmtAmount);
 		LMT.transfer(msg.sender, lmtAmount);
 
 		tokensSold = tokensSold.add(lmtAmount);
