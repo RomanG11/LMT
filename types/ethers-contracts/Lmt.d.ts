@@ -23,15 +23,30 @@ interface LmtInterface extends ethers.utils.Interface {
   functions: {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "distributionContract()": FunctionFragment;
+    "firstUnlockDate()": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
+    "locked(address)": FunctionFragment;
     "name()": FunctionFragment;
+    "owner()": FunctionFragment;
+    "pools(address)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "saleFinishDate()": FunctionFragment;
+    "secondUnlockDate()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "setDistributionContract(address)": FunctionFragment;
+    "addPools(address[])": FunctionFragment;
+    "removePools(address[])": FunctionFragment;
+    "addLocked(address,uint256)": FunctionFragment;
+    "setUnlockDates(uint256,uint256,uint256)": FunctionFragment;
+    "getLocked(address)": FunctionFragment;
+    "balanceOf(address)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -42,17 +57,39 @@ interface LmtInterface extends ethers.utils.Interface {
     functionFragment: "approve",
     values: [string, BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "distributionContract",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "firstUnlockDate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "locked", values: [string]): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "pools", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "saleFinishDate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "secondUnlockDate",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -66,20 +103,65 @@ interface LmtInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setDistributionContract",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "addPools", values: [string[]]): string;
+  encodeFunctionData(
+    functionFragment: "removePools",
+    values: [string[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addLocked",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setUnlockDates",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "getLocked", values: [string]): string;
+  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "distributionContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "firstUnlockDate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "locked", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pools", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "saleFinishDate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "secondUnlockDate",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -90,13 +172,35 @@ interface LmtInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setDistributionContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "addPools", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "removePools",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "addLocked", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setUnlockDates",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getLocked", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
@@ -155,26 +259,6 @@ export class Lmt extends Contract {
     ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC20-balanceOf}.
-     */
-    balanceOf(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    /**
-     * See {IERC20-balanceOf}.
-     */
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    /**
      * Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is called. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.
      */
     decimals(
@@ -210,6 +294,30 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    distributionContract(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    "distributionContract()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    firstUnlockDate(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "firstUnlockDate()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
     /**
      * Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address.
      */
@@ -228,6 +336,20 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    locked(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "locked(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
     /**
      * Returns the name of the token.
      */
@@ -244,6 +366,72 @@ export class Lmt extends Contract {
       overrides?: CallOverrides
     ): Promise<{
       0: string;
+    }>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    pools(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
+    "pools(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
+
+    saleFinishDate(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "saleFinishDate()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    secondUnlockDate(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "secondUnlockDate()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
     }>;
 
     /**
@@ -319,6 +507,112 @@ export class Lmt extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setDistributionContract(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setDistributionContract(address)"(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    addPools(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addPools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    removePools(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "removePools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    addLocked(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addLocked(address,uint256)"(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setUnlockDates(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setUnlockDates(uint256,uint256,uint256)"(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    getLocked(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "getLocked(address)"(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    balanceOf(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    "balanceOf(address)"(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
   };
 
   /**
@@ -358,19 +652,6 @@ export class Lmt extends Contract {
   ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC20-balanceOf}.
-   */
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  /**
-   * See {IERC20-balanceOf}.
-   */
-  "balanceOf(address)"(
-    account: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  /**
    * Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is called. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.
    */
   decimals(overrides?: CallOverrides): Promise<number>;
@@ -398,6 +679,14 @@ export class Lmt extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  distributionContract(overrides?: CallOverrides): Promise<string>;
+
+  "distributionContract()"(overrides?: CallOverrides): Promise<string>;
+
+  firstUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "firstUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   /**
    * Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address.
    */
@@ -416,6 +705,13 @@ export class Lmt extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  locked(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  "locked(address)"(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   /**
    * Returns the name of the token.
    */
@@ -425,6 +721,38 @@ export class Lmt extends Contract {
    * Returns the name of the token.
    */
   "name()"(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Returns the address of the current owner.
+   */
+  owner(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Returns the address of the current owner.
+   */
+  "owner()"(overrides?: CallOverrides): Promise<string>;
+
+  pools(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+  "pools(address)"(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+  /**
+   * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+   */
+  renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
+
+  /**
+   * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+   */
+  "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
+
+  saleFinishDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "saleFinishDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  secondUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "secondUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
    * Returns the symbol of the token, usually a shorter version of the name.
@@ -484,6 +812,101 @@ export class Lmt extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  /**
+   * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+   */
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+   */
+  "transferOwnership(address)"(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setDistributionContract(
+    _distributionContract: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setDistributionContract(address)"(
+    _distributionContract: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  addPools(
+    _pools: string[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "addPools(address[])"(
+    _pools: string[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  removePools(
+    _pools: string[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "removePools(address[])"(
+    _pools: string[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  addLocked(
+    _userAddress: string,
+    _locked: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "addLocked(address,uint256)"(
+    _userAddress: string,
+    _locked: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setUnlockDates(
+    _saleFinishDate: BigNumberish,
+    _firstUnlockDate: BigNumberish,
+    _secondUnlockDate: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setUnlockDates(uint256,uint256,uint256)"(
+    _saleFinishDate: BigNumberish,
+    _firstUnlockDate: BigNumberish,
+    _secondUnlockDate: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  getLocked(
+    _userAddress: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "getLocked(address)"(
+    _userAddress: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * See {IERC20-balanceOf}.
+   */
+  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  /**
+   * See {IERC20-balanceOf}.
+   */
+  "balanceOf(address)"(
+    account: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   callStatic: {
     /**
      * See {IERC20-allowance}.
@@ -522,19 +945,6 @@ export class Lmt extends Contract {
     ): Promise<boolean>;
 
     /**
-     * See {IERC20-balanceOf}.
-     */
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * See {IERC20-balanceOf}.
-     */
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
      * Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is called. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.
      */
     decimals(overrides?: CallOverrides): Promise<number>;
@@ -562,6 +972,14 @@ export class Lmt extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    distributionContract(overrides?: CallOverrides): Promise<string>;
+
+    "distributionContract()"(overrides?: CallOverrides): Promise<string>;
+
+    firstUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "firstUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     /**
      * Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address.
      */
@@ -580,6 +998,13 @@ export class Lmt extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    locked(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "locked(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     /**
      * Returns the name of the token.
      */
@@ -589,6 +1014,38 @@ export class Lmt extends Contract {
      * Returns the name of the token.
      */
     "name()"(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    pools(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    "pools(address)"(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
+
+    saleFinishDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "saleFinishDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    secondUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "secondUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns the symbol of the token, usually a shorter version of the name.
@@ -647,6 +1104,95 @@ export class Lmt extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setDistributionContract(
+      _distributionContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setDistributionContract(address)"(
+      _distributionContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addPools(_pools: string[], overrides?: CallOverrides): Promise<void>;
+
+    "addPools(address[])"(
+      _pools: string[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    removePools(_pools: string[], overrides?: CallOverrides): Promise<void>;
+
+    "removePools(address[])"(
+      _pools: string[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addLocked(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addLocked(address,uint256)"(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setUnlockDates(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setUnlockDates(uint256,uint256,uint256)"(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getLocked(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getLocked(address)"(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    "balanceOf(address)"(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   filters: {
@@ -654,6 +1200,11 @@ export class Lmt extends Contract {
       owner: string | null,
       spender: string | null,
       value: null
+    ): EventFilter;
+
+    OwnershipTransferred(
+      previousOwner: string | null,
+      newOwner: string | null
     ): EventFilter;
 
     Transfer(from: string | null, to: string | null, value: null): EventFilter;
@@ -697,19 +1248,6 @@ export class Lmt extends Contract {
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC20-balanceOf}.
-     */
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * See {IERC20-balanceOf}.
-     */
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
      * Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is called. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.
      */
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
@@ -737,6 +1275,14 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    distributionContract(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "distributionContract()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    firstUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "firstUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     /**
      * Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address.
      */
@@ -755,6 +1301,13 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    locked(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "locked(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     /**
      * Returns the name of the token.
      */
@@ -764,6 +1317,41 @@ export class Lmt extends Contract {
      * Returns the name of the token.
      */
     "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    pools(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "pools(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<BigNumber>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
+
+    saleFinishDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "saleFinishDate()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    secondUnlockDate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "secondUnlockDate()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns the symbol of the token, usually a shorter version of the name.
@@ -822,6 +1410,95 @@ export class Lmt extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setDistributionContract(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setDistributionContract(address)"(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    addPools(_pools: string[], overrides?: Overrides): Promise<BigNumber>;
+
+    "addPools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    removePools(_pools: string[], overrides?: Overrides): Promise<BigNumber>;
+
+    "removePools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    addLocked(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addLocked(address,uint256)"(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setUnlockDates(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setUnlockDates(uint256,uint256,uint256)"(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    getLocked(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getLocked(address)"(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    "balanceOf(address)"(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -862,22 +1539,6 @@ export class Lmt extends Contract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC20-balanceOf}.
-     */
-    balanceOf(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC20-balanceOf}.
-     */
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
      * Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5,05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is called. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}.
      */
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -905,6 +1566,20 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    distributionContract(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "distributionContract()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    firstUnlockDate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "firstUnlockDate()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     /**
      * Atomically increases the allowance granted to `spender` by the caller. This is an alternative to {approve} that can be used as a mitigation for problems described in {IERC20-approve}. Emits an {Approval} event indicating the updated allowance. Requirements: - `spender` cannot be the zero address.
      */
@@ -923,6 +1598,16 @@ export class Lmt extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    locked(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "locked(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     /**
      * Returns the name of the token.
      */
@@ -932,6 +1617,48 @@ export class Lmt extends Contract {
      * Returns the name of the token.
      */
     "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Returns the address of the current owner.
+     */
+    "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    pools(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "pools(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    renounceOwnership(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
+     */
+    "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    saleFinishDate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "saleFinishDate()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    secondUnlockDate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "secondUnlockDate()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the symbol of the token, usually a shorter version of the name.
@@ -989,6 +1716,104 @@ export class Lmt extends Contract {
       recipient: string,
       amount: BigNumberish,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
+     */
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setDistributionContract(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setDistributionContract(address)"(
+      _distributionContract: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    addPools(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addPools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    removePools(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "removePools(address[])"(
+      _pools: string[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    addLocked(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addLocked(address,uint256)"(
+      _userAddress: string,
+      _locked: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setUnlockDates(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setUnlockDates(uint256,uint256,uint256)"(
+      _saleFinishDate: BigNumberish,
+      _firstUnlockDate: BigNumberish,
+      _secondUnlockDate: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    getLocked(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getLocked(address)"(
+      _userAddress: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    balanceOf(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * See {IERC20-balanceOf}.
+     */
+    "balanceOf(address)"(
+      account: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

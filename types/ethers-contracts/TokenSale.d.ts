@@ -25,9 +25,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
     "LMT()": FunctionFragment;
     "LYM()": FunctionFragment;
     "SALE_DURATION()": FunctionFragment;
-    "balances(address)": FunctionFragment;
-    "claimed(address)": FunctionFragment;
-    "lmtTokensLocked()": FunctionFragment;
     "lymCollected()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -37,12 +34,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
     "wallet1Receiver()": FunctionFragment;
     "wallet2Receiver()": FunctionFragment;
     "buy(uint256)": FunctionFragment;
-    "claim()": FunctionFragment;
-    "tokensToClaim(address)": FunctionFragment;
-    "getRemainingTokens(address)": FunctionFragment;
-    "getCurrentExchangeRate()": FunctionFragment;
-    "getDistributionStartTime()": FunctionFragment;
-    "getDistributionEndTime()": FunctionFragment;
     "withdrawUnsoldTokens()": FunctionFragment;
     "withdrawLostTokens(address)": FunctionFragment;
   };
@@ -55,12 +46,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "LYM", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "SALE_DURATION",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "balances", values: [string]): string;
-  encodeFunctionData(functionFragment: "claimed", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "lmtTokensLocked",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -90,27 +75,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "buy", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "claim", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "tokensToClaim",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRemainingTokens",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getCurrentExchangeRate",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getDistributionStartTime",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getDistributionEndTime",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "withdrawUnsoldTokens",
     values?: undefined
@@ -128,12 +92,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "LYM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "SALE_DURATION",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimed", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "lmtTokensLocked",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -160,27 +118,6 @@ interface TokenSaleInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "buy", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "tokensToClaim",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getRemainingTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getCurrentExchangeRate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getDistributionStartTime",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getDistributionEndTime",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "withdrawUnsoldTokens",
     data: BytesLike
@@ -258,46 +195,6 @@ export class TokenSale extends Contract {
     }>;
 
     "SALE_DURATION()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    balances(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "balances(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    claimed(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "claimed(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    lmtTokensLocked(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "lmtTokensLocked()"(
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
@@ -417,76 +314,6 @@ export class TokenSale extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    claim(overrides?: Overrides): Promise<ContractTransaction>;
-
-    "claim()"(overrides?: Overrides): Promise<ContractTransaction>;
-
-    tokensToClaim(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      res: BigNumber;
-      0: BigNumber;
-    }>;
-
-    "tokensToClaim(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      res: BigNumber;
-      0: BigNumber;
-    }>;
-
-    getRemainingTokens(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "getRemainingTokens(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    getCurrentExchangeRate(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "getCurrentExchangeRate()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    getDistributionStartTime(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "getDistributionStartTime()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    getDistributionEndTime(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "getDistributionEndTime()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
     withdrawUnsoldTokens(overrides?: Overrides): Promise<ContractTransaction>;
 
     "withdrawUnsoldTokens()"(
@@ -519,24 +346,6 @@ export class TokenSale extends Contract {
   SALE_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
   "SALE_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-  balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "balances(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  claimed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "claimed(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  lmtTokensLocked(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "lmtTokensLocked()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   lymCollected(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -604,42 +413,6 @@ export class TokenSale extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  claim(overrides?: Overrides): Promise<ContractTransaction>;
-
-  "claim()"(overrides?: Overrides): Promise<ContractTransaction>;
-
-  tokensToClaim(
-    _userAddress: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  "tokensToClaim(address)"(
-    _userAddress: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getRemainingTokens(
-    _userAddress: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  "getRemainingTokens(address)"(
-    _userAddress: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getCurrentExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "getCurrentExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getDistributionStartTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "getDistributionStartTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-  getDistributionEndTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "getDistributionEndTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
   withdrawUnsoldTokens(overrides?: Overrides): Promise<ContractTransaction>;
 
   "withdrawUnsoldTokens()"(overrides?: Overrides): Promise<ContractTransaction>;
@@ -670,24 +443,6 @@ export class TokenSale extends Contract {
     SALE_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
     "SALE_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "balances(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    claimed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "claimed(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    lmtTokensLocked(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "lmtTokensLocked()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     lymCollected(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -752,42 +507,6 @@ export class TokenSale extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    claim(overrides?: CallOverrides): Promise<void>;
-
-    "claim()"(overrides?: CallOverrides): Promise<void>;
-
-    tokensToClaim(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensToClaim(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getRemainingTokens(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "getRemainingTokens(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getCurrentExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getCurrentExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDistributionStartTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDistributionStartTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDistributionEndTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDistributionEndTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     withdrawUnsoldTokens(overrides?: CallOverrides): Promise<void>;
 
     "withdrawUnsoldTokens()"(overrides?: CallOverrides): Promise<void>;
@@ -806,8 +525,8 @@ export class TokenSale extends Contract {
   filters: {
     Bought(
       user: string | null,
-      stage: BigNumberish | null,
-      lymAmount: BigNumberish | null
+      lymAmount: BigNumberish | null,
+      lmtAmount: null
     ): EventFilter;
 
     Claimed(user: string | null, lmtAmount: null): EventFilter;
@@ -834,24 +553,6 @@ export class TokenSale extends Contract {
     SALE_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
 
     "SALE_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "balances(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    claimed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "claimed(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    lmtTokensLocked(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "lmtTokensLocked()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     lymCollected(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -916,42 +617,6 @@ export class TokenSale extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    claim(overrides?: Overrides): Promise<BigNumber>;
-
-    "claim()"(overrides?: Overrides): Promise<BigNumber>;
-
-    tokensToClaim(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokensToClaim(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getRemainingTokens(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "getRemainingTokens(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getCurrentExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getCurrentExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDistributionStartTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDistributionStartTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getDistributionEndTime(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDistributionEndTime()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     withdrawUnsoldTokens(overrides?: Overrides): Promise<BigNumber>;
 
     "withdrawUnsoldTokens()"(overrides?: Overrides): Promise<BigNumber>;
@@ -985,32 +650,6 @@ export class TokenSale extends Contract {
     SALE_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "SALE_DURATION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    balances(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "balances(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    claimed(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "claimed(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    lmtTokensLocked(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "lmtTokensLocked()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     lymCollected(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1080,54 +719,6 @@ export class TokenSale extends Contract {
     "buy(uint256)"(
       _lymAmount: BigNumberish,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    claim(overrides?: Overrides): Promise<PopulatedTransaction>;
-
-    "claim()"(overrides?: Overrides): Promise<PopulatedTransaction>;
-
-    tokensToClaim(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokensToClaim(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getRemainingTokens(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getRemainingTokens(address)"(
-      _userAddress: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getCurrentExchangeRate(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getCurrentExchangeRate()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getDistributionStartTime(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getDistributionStartTime()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getDistributionEndTime(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getDistributionEndTime()"(
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     withdrawUnsoldTokens(overrides?: Overrides): Promise<PopulatedTransaction>;
