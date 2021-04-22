@@ -1187,10 +1187,10 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 contract LympoNFT is ERC1155Tradable {
 	// _proxyRegistryAddress - 0xa5409ec958c83c3f309868babaca7c86dcb077c1
 	constructor(address _proxyRegistryAddress) public ERC1155Tradable("Meme Ltd.", "MEMES", _proxyRegistryAddress) {
-		_setBaseMetadataURI("https://s3.us-east-2.amazonaws.com/nft-lympo.com/pools/assets/");
+		_setBaseMetadataURI("https://api.lympo.io/pools/assets/");
 	}
 
 	function contractURI() public pure returns (string memory) {
-		return "https://api.dontbuymeme.com/contract/memes-erc1155";
+		return "https://api.lympo.io/pools/lympo";
 	}
 }
