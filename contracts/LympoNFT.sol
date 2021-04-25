@@ -1139,8 +1139,7 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 		uint256 _quantity,
 		bytes memory _data
 	) public onlyMinter {
-		uint256 tokenId = _id;
-		require(tokenSupply[tokenId] < tokenMaxSupply[tokenId], "Max supply reached");
+		require(tokenSupply[_id] < tokenMaxSupply[_id], "Max supply reached");
 		_mint(_to, _id, _quantity, _data);
 		tokenSupply[_id] = tokenSupply[_id].add(_quantity);
 	}
@@ -1185,10 +1184,36 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 
 
 contract LympoNFT is ERC1155Tradable {
+
+  mapping(uint => bool) public mintOwnableBlocked;
+
 	// _proxyRegistryAddress - 0xa5409ec958c83c3f309868babaca7c86dcb077c1
-	constructor(address _proxyRegistryAddress) public ERC1155Tradable("Meme Ltd.", "MEMES", _proxyRegistryAddress) {
+	constructor(address _proxyRegistryAddress) public ERC1155Tradable("Lympo NFT", "LYMPO", _proxyRegistryAddress) {
 		_setBaseMetadataURI("https://api.lympo.io/pools/assets/");
 	}
+
+  /**
+   * @dev Mints some amount of tokens to an address
+   * @param _to          Address of the future owner of the token
+   * @param _id          Token ID to mint
+   * @param _quantity    Amount of tokens to mint
+   * @param _data        Data to pass if receiver is contract
+   */
+  function mintOwnable(
+    address _to,
+    uint256 _id,
+    uint256 _quantity,
+    bytes memory _data
+  ) public onlyOwner {
+    require(!mintOwnableBlocked[_id], "mint closed");
+    _mint(_to, _id, _quantity, _data);
+  }
+
+  function blockMintOwnable(uint[] calldata _ids) public onlyOwner {
+    for(uint i = 0; i < _ids.length; i++) {
+      mintOwnableBlocked[_ids[i]] = true;
+    }
+  }
 
 	function contractURI() public pure returns (string memory) {
 		return "https://api.lympo.io/pools/lympo";

@@ -1363,13 +1363,17 @@ contract SalePool is TokenWrapper, Ownable {
   }
 
   function stake(uint256 amount) override public updateReward(msg.sender) {
-    require(amount >= utils.getMinStake(), "min stake - 300 LMT");
+    uint endBalance = balanceOf(msg.sender).add(amount);
+    require(endBalance >= utils.getMinStake(), "min stake - 300 LMT");
+    require(endBalance <= 1000000e18, "total stake cannot be more 1 million LMT");
     super.stake(amount);
     emit Staked(msg.sender, amount);
   }
 
   function withdraw(uint256 amount) override public updateReward(msg.sender) {
     require(amount > 0, "Cannot withdraw 0");
+    uint endBalance = balanceOf(msg.sender).sub(amount);
+    require(endBalance == 0 || endBalance >= utils.getMinStake(), "cannot withdraw if stake less 300 LMT");
 
     super.withdraw(amount);
     emit Withdrawn(msg.sender, amount);
