@@ -1,5 +1,5 @@
 {
-  "name": "lmt",
+  "name": "NFT-drop-Boonji",
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
@@ -11,12 +11,11 @@
     "generate-types": "rimraf types/ethers-contracts && typechain --target=ethers-v5 \"build/contracts/*.json\""
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.1.0",
+    "openzeppelin-solidity": "~4.1.0",
     "@openzeppelin/test-helpers": "^0.5.6",
     "@typechain/web3-v1": "^1.0.0",
     "truffle-hdwallet-provider": "^1.0.17",
-    "truffle-plugin-verify": "^0.5.2",
-    "web3": "^1.3.1"
+    "truffle-plugin-verify": "^0.5.2"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^1.0.0",
