@@ -19,17 +19,13 @@
  */
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
-// const infuraKey = "e131c7a0c10f45a4b68b470a4a109543";
-const infuraKey = "aeb13f8e5fd047e3a172c6b9a9eb58c1"
+const infuraKey = "e131c7a0c10f45a4b68b470a4a109543";
 
-// const mnemonic = "cheap inch cry pulse tornado spell embrace write suspect gorilla wish page".toString().trim()
-const mnemonic = "jar only brick demise coach help horror board never lion myth van".toString().trim()
+const mnemonic = "cheap inch cry pulse tornado spell embrace write suspect gorilla wish page".toString().trim()
 
-
-// let ropstenProvider = new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/` + infuraKey)
-let mainnetProvider = new HDWalletProvider(mnemonic, `https://mainnet.infura.io/v3/` + infuraKey, 0, 10000)
-// let rinkebyProvider = new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/` + infuraKey, 0, 10000)
-// let kovanProvider = new HDWalletProvider(mnemonic, `https://kovan.infura.io/v3/` + infuraKey, 0, 5)
+let ropstenProvider = new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/` + infuraKey)
+let rinkebyProvider = new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/` + infuraKey, 0, 5)
+let kovanProvider = new HDWalletProvider(mnemonic, `https://kovan.infura.io/v3/` + infuraKey, 0, 5)
 
 module.exports = {
   /**
@@ -68,41 +64,31 @@ module.exports = {
 
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    // ropsten: {
-    //   provider: ropstenProvider,
-    //   network_id: 3,       // Ropsten's id
-    //   gas: 8000000,        // Ropsten has a lower block limit than mainnet
-    //   confirmations: 0,    // # of confs to wait between deployments. (default: 0)
-    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    //   skipDryRun: false     // Skip dry run before migrations? (default: false for public nets )
-    // },
-    mainnet: {
-      provider: mainnetProvider,
-      network_id: 1,       // Ropsten's id
-      gas: 5000000,        // Ropsten has a lower block limit than mainnet
-      gasPrice: 33000000000,
+    ropsten: {
+      provider: ropstenProvider,
+      network_id: 3,       // Ropsten's id
+      gas: 8000000,        // Ropsten has a lower block limit than mainnet
       confirmations: 0,    // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 1000,  // # of blocks before a deployment times out  (minimum/default: 50)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: false     // Skip dry run before migrations? (default: false for public nets )
+    },
+    rinkeby: {
+      provider: rinkebyProvider,
+      network_id: 4,       // Ropsten's id
+      gas: 10000000,        // Ropsten has a lower block limit than mainnet
+      gasPrice: 50000000000,
+      confirmations: 0,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 50,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
-
-    // rinkeby: {
-    //   provider: rinkebyProvider,
-    //   network_id: 4,       // Ropsten's id
-    //   gas: 10000000,        // Ropsten has a lower block limit than mainnet
-    //   gasPrice: 50000000000,
-    //   confirmations: 0,    // # of confs to wait between deployments. (default: 0)
-    //   timeoutBlocks: 50,  // # of blocks before a deployment times out  (minimum/default: 50)
-    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
-    // kovan: {
-    //   provider: kovanProvider,
-    //   network_id: 42,       // Ropsten's id
-    //   gas: 10000000,        // Ropsten has a lower block limit than mainnet
-    //   confirmations: 0,    // # of confs to wait between deployments. (default: 0)
-    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
+    kovan: {
+      provider: kovanProvider,
+      network_id: 42,       // Ropsten's id
+      gas: 10000000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 0,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
 
     // Useful for private networks
     // private: {
