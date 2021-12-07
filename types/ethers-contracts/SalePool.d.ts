@@ -13,6 +13,7 @@ import {
   Contract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides
 } from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
@@ -21,30 +22,55 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
 interface SalePoolInterface extends ethers.utils.Interface {
   functions: {
-    "MIN_STAKE()": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "cards(uint256)": FunctionFragment;
+    "creditsGained(address)": FunctionFragment;
+    "creditsSpent(address)": FunctionFragment;
+    "impl()": FunctionFragment;
     "isOwner()": FunctionFragment;
     "lastUpdateTime(address)": FunctionFragment;
     "nfts()": FunctionFragment;
     "owner()": FunctionFragment;
     "points(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "saleFee()": FunctionFragment;
+    "sales(uint256)": FunctionFragment;
+    "secondaryPayments(uint256,uint256)": FunctionFragment;
     "token()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "addCard(uint256,uint256)": FunctionFragment;
+    "utils()": FunctionFragment;
+    "init(address,address,address)": FunctionFragment;
+    "fastRecovery(uint256[],uint256[])": FunctionFragment;
+    "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)": FunctionFragment;
+    "changeCardOpenTime(uint256,uint256)": FunctionFragment;
+    "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)": FunctionFragment;
+    "addNewSecondaryPayment(uint256,address,uint256)": FunctionFragment;
+    "changeSecondaryPayment(uint256,uint256,address,uint256,bool)": FunctionFragment;
+    "getCardPriceV2(uint256)": FunctionFragment;
     "earned(address)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
     "exit()": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
-    "getProduction(uint256)": FunctionFragment;
+    "redeemV2(uint256,address)": FunctionFragment;
+    "getSalesLength()": FunctionFragment;
+    "getSales(uint256,uint256)": FunctionFragment;
+    "changeSaleFee(uint256)": FunctionFragment;
+    "sellCredits(uint256,address,uint256)": FunctionFragment;
+    "setPoints(address[],uint256[])": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "MIN_STAKE", values?: undefined): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(functionFragment: "cards", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "creditsGained",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "creditsSpent",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "impl", values?: undefined): string;
   encodeFunctionData(functionFragment: "isOwner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "lastUpdateTime",
@@ -57,6 +83,12 @@ interface SalePoolInterface extends ethers.utils.Interface {
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "saleFee", values?: undefined): string;
+  encodeFunctionData(functionFragment: "sales", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "secondaryPayments",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -66,9 +98,49 @@ interface SalePoolInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "utils", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "addCard",
+    functionFragment: "init",
+    values: [string, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "fastRecovery",
+    values: [BigNumberish[], BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addCardV2",
+    values: [
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      string,
+      BigNumberish,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeCardOpenTime",
     values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeCardOpenTimeAndBoostedCredits",
+    values: [BigNumberish, BigNumberish, BigNumberish, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addNewSecondaryPayment",
+    values: [BigNumberish, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeSecondaryPayment",
+    values: [BigNumberish, BigNumberish, string, BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCardPriceV2",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "earned", values: [string]): string;
   encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
@@ -78,17 +150,41 @@ interface SalePoolInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "exit", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "redeem",
+    functionFragment: "redeemV2",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSalesLength",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSales",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeSaleFee",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getProduction",
-    values: [BigNumberish]
+    functionFragment: "sellCredits",
+    values: [BigNumberish, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPoints",
+    values: [string[], BigNumberish[]]
   ): string;
 
-  decodeFunctionResult(functionFragment: "MIN_STAKE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "cards", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "creditsGained",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "creditsSpent",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "impl", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "lastUpdateTime",
@@ -101,6 +197,12 @@ interface SalePoolInterface extends ethers.utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "saleFee", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sales", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "secondaryPayments",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -110,28 +212,72 @@ interface SalePoolInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addCard", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "utils", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "fastRecovery",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "addCardV2", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeCardOpenTime",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "changeCardOpenTimeAndBoostedCredits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "addNewSecondaryPayment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "changeSecondaryPayment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCardPriceV2",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "exit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "redeemV2", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getProduction",
+    functionFragment: "getSalesLength",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getSales", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeSaleFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "sellCredits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setPoints", data: BytesLike): Result;
 
   events: {
     "CardAdded(uint256,uint256)": EventFragment;
+    "CreditsBought(uint256,address,uint256,uint256)": EventFragment;
+    "NewSale(address,uint256,address,uint256)": EventFragment;
+    "NewSaleFee(uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Redeemed(address,uint256)": EventFragment;
+    "SaleCanceled(uint256)": EventFragment;
     "Staked(address,uint256)": EventFragment;
     "Withdrawn(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CardAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "CreditsBought"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewSale"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewSaleFee"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Redeemed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SaleCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
@@ -150,18 +296,6 @@ export class SalePool extends Contract {
   interface: SalePoolInterface;
 
   functions: {
-    MIN_STAKE(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "MIN_STAKE()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
     balanceOf(
       account: string,
       overrides?: CallOverrides
@@ -180,14 +314,80 @@ export class SalePool extends Contract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
+      openTime: BigNumber;
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      additionalTokenAddress: string;
+      additionalValue: BigNumber;
+      mintFinishTime: BigNumber;
+      amount: BigNumber;
       0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string;
+      4: BigNumber;
+      5: BigNumber;
+      6: BigNumber;
     }>;
 
     "cards(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
+      openTime: BigNumber;
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      additionalTokenAddress: string;
+      additionalValue: BigNumber;
+      mintFinishTime: BigNumber;
+      amount: BigNumber;
       0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string;
+      4: BigNumber;
+      5: BigNumber;
+      6: BigNumber;
+    }>;
+
+    creditsGained(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "creditsGained(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    creditsSpent(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "creditsSpent(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    impl(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    "impl()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
     }>;
 
     /**
@@ -276,6 +476,80 @@ export class SalePool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
+    saleFee(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "saleFee()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    sales(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }>;
+
+    "sales(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }>;
+
+    secondaryPayments(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      tokenAddress: string;
+      amount: BigNumber;
+      isActive: boolean;
+      0: string;
+      1: BigNumber;
+      2: boolean;
+    }>;
+
+    "secondaryPayments(uint256,uint256)"(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      tokenAddress: string;
+      amount: BigNumber;
+      isActive: boolean;
+      0: string;
+      1: BigNumber;
+      2: boolean;
+    }>;
+
     token(
       overrides?: CallOverrides
     ): Promise<{
@@ -316,17 +590,173 @@ export class SalePool extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    utils(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    "utils()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    init(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "init(address,address,address)"(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    fastRecovery(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "fastRecovery(uint256[],uint256[])"(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    addCardV2(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    changeCardOpenTime(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "changeCardOpenTime(uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    changeCardOpenTimeAndBoostedCredits(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    addNewSecondaryPayment(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "addNewSecondaryPayment(uint256,address,uint256)"(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    changeSecondaryPayment(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "changeSecondaryPayment(uint256,uint256,address,uint256,bool)"(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    getCardPriceV2(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      nextPriceChange: BigNumber;
+      additionalTokenAddresses: string[];
+      additionalValues: BigNumber[];
+      tokenSymbols: string[];
+      decimals: number[];
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string[];
+      4: BigNumber[];
+      5: string[];
+      6: number[];
+    }>;
+
+    "getCardPriceV2(uint256)"(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      nextPriceChange: BigNumber;
+      additionalTokenAddresses: string[];
+      additionalValues: BigNumber[];
+      tokenSymbols: string[];
+      decimals: number[];
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string[];
+      4: BigNumber[];
+      5: string[];
+      6: number[];
+    }>;
 
     earned(
       account: string,
@@ -366,34 +796,136 @@ export class SalePool extends Contract {
 
     "exit()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-    redeem(
+    redeemV2(
       card: BigNumberish,
-      overrides?: Overrides
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
-    "redeem(uint256)"(
+    "redeemV2(uint256,address)"(
       card: BigNumberish,
-      overrides?: Overrides
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
-    getProduction(
-      _stacked: BigNumberish,
+    getSalesLength(
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
 
-    "getProduction(uint256)"(
-      _stacked: BigNumberish,
+    "getSalesLength()"(
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
+
+    getSales(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      res: {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[];
+      0: {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[];
+    }>;
+
+    "getSales(uint256,uint256)"(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      res: {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[];
+      0: {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[];
+    }>;
+
+    changeSaleFee(
+      _newFee: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "changeSaleFee(uint256)"(
+      _newFee: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    sellCredits(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "sellCredits(uint256,address,uint256)"(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setPoints(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setPoints(address[],uint256[])"(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
-
-  MIN_STAKE(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "MIN_STAKE()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -402,12 +934,63 @@ export class SalePool extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  cards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+  cards(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    openTime: BigNumber;
+    originalCredits: BigNumber;
+    boostedCredits: BigNumber;
+    additionalTokenAddress: string;
+    additionalValue: BigNumber;
+    mintFinishTime: BigNumber;
+    amount: BigNumber;
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+    3: string;
+    4: BigNumber;
+    5: BigNumber;
+    6: BigNumber;
+  }>;
 
   "cards(uint256)"(
     arg0: BigNumberish,
     overrides?: CallOverrides
+  ): Promise<{
+    openTime: BigNumber;
+    originalCredits: BigNumber;
+    boostedCredits: BigNumber;
+    additionalTokenAddress: string;
+    additionalValue: BigNumber;
+    mintFinishTime: BigNumber;
+    amount: BigNumber;
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+    3: string;
+    4: BigNumber;
+    5: BigNumber;
+    6: BigNumber;
+  }>;
+
+  creditsGained(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  "creditsGained(address)"(
+    arg0: string,
+    overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  creditsSpent(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  "creditsSpent(address)"(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  impl(overrides?: CallOverrides): Promise<string>;
+
+  "impl()"(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Returns true if the caller is the current owner.
@@ -457,6 +1040,72 @@ export class SalePool extends Contract {
    */
   "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
+  saleFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "saleFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  sales(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    from: string;
+    credits: BigNumber;
+    tokenAddress: string;
+    tokenSymbol: string;
+    tokensPerCredit: BigNumber;
+    active: boolean;
+    0: string;
+    1: BigNumber;
+    2: string;
+    3: string;
+    4: BigNumber;
+    5: boolean;
+  }>;
+
+  "sales(uint256)"(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    from: string;
+    credits: BigNumber;
+    tokenAddress: string;
+    tokenSymbol: string;
+    tokensPerCredit: BigNumber;
+    active: boolean;
+    0: string;
+    1: BigNumber;
+    2: string;
+    3: string;
+    4: BigNumber;
+    5: boolean;
+  }>;
+
+  secondaryPayments(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    tokenAddress: string;
+    amount: BigNumber;
+    isActive: boolean;
+    0: string;
+    1: BigNumber;
+    2: boolean;
+  }>;
+
+  "secondaryPayments(uint256,uint256)"(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    tokenAddress: string;
+    amount: BigNumber;
+    isActive: boolean;
+    0: string;
+    1: BigNumber;
+    2: boolean;
+  }>;
+
   token(overrides?: CallOverrides): Promise<string>;
 
   "token()"(overrides?: CallOverrides): Promise<string>;
@@ -481,17 +1130,165 @@ export class SalePool extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  addCard(
-    cardId: BigNumberish,
-    amount: BigNumberish,
+  utils(overrides?: CallOverrides): Promise<string>;
+
+  "utils()"(overrides?: CallOverrides): Promise<string>;
+
+  init(
+    _nftsAddress: string,
+    _token: string,
+    _utils: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addCard(uint256,uint256)"(
-    cardId: BigNumberish,
-    amount: BigNumberish,
+  "init(address,address,address)"(
+    _nftsAddress: string,
+    _token: string,
+    _utils: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  fastRecovery(
+    cardIds: BigNumberish[],
+    originalCredits: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "fastRecovery(uint256[],uint256[])"(
+    cardIds: BigNumberish[],
+    originalCredits: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  addCardV2(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    originalCredits: BigNumberish,
+    boostedCredits: BigNumberish,
+    additionalTokenAddress: string,
+    additionalValue: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    mintFinishTime: BigNumberish,
+    mintingAmount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)"(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    originalCredits: BigNumberish,
+    boostedCredits: BigNumberish,
+    additionalTokenAddress: string,
+    additionalValue: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    mintFinishTime: BigNumberish,
+    mintingAmount: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  changeCardOpenTime(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "changeCardOpenTime(uint256,uint256)"(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  changeCardOpenTimeAndBoostedCredits(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    boostedCredits: BigNumberish,
+    additionalTokenAddress: string,
+    additionalValue: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)"(
+    cardId: BigNumberish,
+    openTime: BigNumberish,
+    boostedCredits: BigNumberish,
+    additionalTokenAddress: string,
+    additionalValue: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  addNewSecondaryPayment(
+    cardId: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "addNewSecondaryPayment(uint256,address,uint256)"(
+    cardId: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  changeSecondaryPayment(
+    cardId: BigNumberish,
+    index: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    isActive: boolean,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "changeSecondaryPayment(uint256,uint256,address,uint256,bool)"(
+    cardId: BigNumberish,
+    index: BigNumberish,
+    additionalSecondaryTokenAddress: string,
+    additionalSecondaryValue: BigNumberish,
+    isActive: boolean,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  getCardPriceV2(
+    cardId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    originalCredits: BigNumber;
+    boostedCredits: BigNumber;
+    nextPriceChange: BigNumber;
+    additionalTokenAddresses: string[];
+    additionalValues: BigNumber[];
+    tokenSymbols: string[];
+    decimals: number[];
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+    3: string[];
+    4: BigNumber[];
+    5: string[];
+    6: number[];
+  }>;
+
+  "getCardPriceV2(uint256)"(
+    cardId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<{
+    originalCredits: BigNumber;
+    boostedCredits: BigNumber;
+    nextPriceChange: BigNumber;
+    additionalTokenAddresses: string[];
+    additionalValues: BigNumber[];
+    tokenSymbols: string[];
+    decimals: number[];
+    0: BigNumber;
+    1: BigNumber;
+    2: BigNumber;
+    3: string[];
+    4: BigNumber[];
+    5: string[];
+    6: number[];
+  }>;
 
   earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -524,31 +1321,101 @@ export class SalePool extends Contract {
 
   "exit()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-  redeem(
+  redeemV2(
     card: BigNumberish,
+    _paymentTokenAddress: string,
+    overrides?: PayableOverrides
+  ): Promise<ContractTransaction>;
+
+  "redeemV2(uint256,address)"(
+    card: BigNumberish,
+    _paymentTokenAddress: string,
+    overrides?: PayableOverrides
+  ): Promise<ContractTransaction>;
+
+  getSalesLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "getSalesLength()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getSales(
+    _start: BigNumberish,
+    _end: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    {
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }[]
+  >;
+
+  "getSales(uint256,uint256)"(
+    _start: BigNumberish,
+    _end: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    {
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }[]
+  >;
+
+  changeSaleFee(
+    _newFee: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "redeem(uint256)"(
-    card: BigNumberish,
+  "changeSaleFee(uint256)"(
+    _newFee: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  getProduction(
-    _stacked: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  sellCredits(
+    _creditsAmount: BigNumberish,
+    _tokenAddress: string,
+    _tokensPerCredit: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "getProduction(uint256)"(
-    _stacked: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "sellCredits(uint256,address,uint256)"(
+    _creditsAmount: BigNumberish,
+    _tokenAddress: string,
+    _tokensPerCredit: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setPoints(
+    _addresses: string[],
+    _balances: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setPoints(address[],uint256[])"(
+    _addresses: string[],
+    _balances: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    MIN_STAKE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "MIN_STAKE()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "balanceOf(address)"(
@@ -556,12 +1423,63 @@ export class SalePool extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    cards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    cards(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      openTime: BigNumber;
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      additionalTokenAddress: string;
+      additionalValue: BigNumber;
+      mintFinishTime: BigNumber;
+      amount: BigNumber;
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string;
+      4: BigNumber;
+      5: BigNumber;
+      6: BigNumber;
+    }>;
 
     "cards(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<{
+      openTime: BigNumber;
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      additionalTokenAddress: string;
+      additionalValue: BigNumber;
+      mintFinishTime: BigNumber;
+      amount: BigNumber;
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string;
+      4: BigNumber;
+      5: BigNumber;
+      6: BigNumber;
+    }>;
+
+    creditsGained(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "creditsGained(address)"(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    creditsSpent(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "creditsSpent(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    impl(overrides?: CallOverrides): Promise<string>;
+
+    "impl()"(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -611,6 +1529,72 @@ export class SalePool extends Contract {
      */
     "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
 
+    saleFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "saleFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    sales(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }>;
+
+    "sales(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      from: string;
+      credits: BigNumber;
+      tokenAddress: string;
+      tokenSymbol: string;
+      tokensPerCredit: BigNumber;
+      active: boolean;
+      0: string;
+      1: BigNumber;
+      2: string;
+      3: string;
+      4: BigNumber;
+      5: boolean;
+    }>;
+
+    secondaryPayments(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      tokenAddress: string;
+      amount: BigNumber;
+      isActive: boolean;
+      0: string;
+      1: BigNumber;
+      2: boolean;
+    }>;
+
+    "secondaryPayments(uint256,uint256)"(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      tokenAddress: string;
+      amount: BigNumber;
+      isActive: boolean;
+      0: string;
+      1: BigNumber;
+      2: boolean;
+    }>;
+
     token(overrides?: CallOverrides): Promise<string>;
 
     "token()"(overrides?: CallOverrides): Promise<string>;
@@ -635,17 +1619,165 @@ export class SalePool extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    utils(overrides?: CallOverrides): Promise<string>;
+
+    "utils()"(overrides?: CallOverrides): Promise<string>;
+
+    init(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "init(address,address,address)"(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    fastRecovery(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "fastRecovery(uint256[],uint256[])"(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addCardV2(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    changeCardOpenTime(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "changeCardOpenTime(uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    changeCardOpenTimeAndBoostedCredits(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    addNewSecondaryPayment(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "addNewSecondaryPayment(uint256,address,uint256)"(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    changeSecondaryPayment(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "changeSecondaryPayment(uint256,uint256,address,uint256,bool)"(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getCardPriceV2(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      nextPriceChange: BigNumber;
+      additionalTokenAddresses: string[];
+      additionalValues: BigNumber[];
+      tokenSymbols: string[];
+      decimals: number[];
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string[];
+      4: BigNumber[];
+      5: string[];
+      6: number[];
+    }>;
+
+    "getCardPriceV2(uint256)"(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      originalCredits: BigNumber;
+      boostedCredits: BigNumber;
+      nextPriceChange: BigNumber;
+      additionalTokenAddresses: string[];
+      additionalValues: BigNumber[];
+      tokenSymbols: string[];
+      decimals: number[];
+      0: BigNumber;
+      1: BigNumber;
+      2: BigNumber;
+      3: string[];
+      4: BigNumber[];
+      5: string[];
+      6: number[];
+    }>;
 
     earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -672,26 +1804,119 @@ export class SalePool extends Contract {
 
     "exit()"(overrides?: CallOverrides): Promise<void>;
 
-    redeem(card: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    "redeem(uint256)"(
+    redeemV2(
       card: BigNumberish,
+      _paymentTokenAddress: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getProduction(
-      _stacked: BigNumberish,
+    "redeemV2(uint256,address)"(
+      card: BigNumberish,
+      _paymentTokenAddress: string,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<void>;
 
-    "getProduction(uint256)"(
-      _stacked: BigNumberish,
+    getSalesLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getSalesLength()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSales(
+      _start: BigNumberish,
+      _end: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<
+      {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[]
+    >;
+
+    "getSales(uint256,uint256)"(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      {
+        from: string;
+        credits: BigNumber;
+        tokenAddress: string;
+        tokenSymbol: string;
+        tokensPerCredit: BigNumber;
+        active: boolean;
+        0: string;
+        1: BigNumber;
+        2: string;
+        3: string;
+        4: BigNumber;
+        5: boolean;
+      }[]
+    >;
+
+    changeSaleFee(
+      _newFee: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "changeSaleFee(uint256)"(
+      _newFee: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    sellCredits(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "sellCredits(uint256,address,uint256)"(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPoints(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setPoints(address[],uint256[])"(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
     CardAdded(card: null, points: null): EventFilter;
+
+    CreditsBought(
+      saleId: BigNumberish | null,
+      buyer: string | null,
+      fee: BigNumberish | null,
+      totalPrice: null
+    ): EventFilter;
+
+    NewSale(
+      from: string | null,
+      creditsAmount: BigNumberish | null,
+      tokenAddress: string | null,
+      tokensPerCredit: null
+    ): EventFilter;
+
+    NewSaleFee(newFee: null): EventFilter;
 
     OwnershipTransferred(
       previousOwner: string | null,
@@ -700,16 +1925,14 @@ export class SalePool extends Contract {
 
     Redeemed(user: string | null, amount: null): EventFilter;
 
+    SaleCanceled(saleId: null): EventFilter;
+
     Staked(user: string | null, amount: null): EventFilter;
 
     Withdrawn(user: string | null, amount: null): EventFilter;
   };
 
   estimateGas: {
-    MIN_STAKE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "MIN_STAKE()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "balanceOf(address)"(
@@ -723,6 +1946,24 @@ export class SalePool extends Contract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    creditsGained(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "creditsGained(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    creditsSpent(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "creditsSpent(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    impl(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "impl()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -772,6 +2013,29 @@ export class SalePool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
 
+    saleFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "saleFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    sales(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "sales(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    secondaryPayments(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "secondaryPayments(uint256,uint256)"(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
     "token()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -796,16 +2060,134 @@ export class SalePool extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    utils(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "utils()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    init(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "init(address,address,address)"(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    fastRecovery(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "fastRecovery(uint256[],uint256[])"(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    addCardV2(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    changeCardOpenTime(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "changeCardOpenTime(uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    changeCardOpenTimeAndBoostedCredits(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    addNewSecondaryPayment(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "addNewSecondaryPayment(uint256,address,uint256)"(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    changeSecondaryPayment(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "changeSecondaryPayment(uint256,uint256,address,uint256,bool)"(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    getCardPriceV2(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getCardPriceV2(uint256)"(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -833,29 +2215,72 @@ export class SalePool extends Contract {
 
     "exit()"(overrides?: Overrides): Promise<BigNumber>;
 
-    redeem(card: BigNumberish, overrides?: Overrides): Promise<BigNumber>;
-
-    "redeem(uint256)"(
+    redeemV2(
       card: BigNumberish,
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
+    ): Promise<BigNumber>;
+
+    "redeemV2(uint256,address)"(
+      card: BigNumberish,
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
+    ): Promise<BigNumber>;
+
+    getSalesLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getSalesLength()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getSales(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getSales(uint256,uint256)"(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    changeSaleFee(
+      _newFee: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    getProduction(
-      _stacked: BigNumberish,
-      overrides?: CallOverrides
+    "changeSaleFee(uint256)"(
+      _newFee: BigNumberish,
+      overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "getProduction(uint256)"(
-      _stacked: BigNumberish,
-      overrides?: CallOverrides
+    sellCredits(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "sellCredits(uint256,address,uint256)"(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setPoints(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setPoints(address[],uint256[])"(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    MIN_STAKE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "MIN_STAKE()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     balanceOf(
       account: string,
       overrides?: CallOverrides
@@ -875,6 +2300,30 @@ export class SalePool extends Contract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    creditsGained(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "creditsGained(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    creditsSpent(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "creditsSpent(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    impl(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "impl()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -930,6 +2379,32 @@ export class SalePool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
+    saleFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "saleFee()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    sales(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "sales(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    secondaryPayments(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "secondaryPayments(uint256,uint256)"(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "token()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -954,16 +2429,134 @@ export class SalePool extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    utils(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "utils()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    init(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "init(address,address,address)"(
+      _nftsAddress: string,
+      _token: string,
+      _utils: string,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    fastRecovery(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "fastRecovery(uint256[],uint256[])"(
+      cardIds: BigNumberish[],
+      originalCredits: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    addCardV2(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addCardV2(uint256,uint256,uint256,uint256,address,uint256,address,uint256,uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      originalCredits: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      mintFinishTime: BigNumberish,
+      mintingAmount: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    changeCardOpenTime(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "changeCardOpenTime(uint256,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    changeCardOpenTimeAndBoostedCredits(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "changeCardOpenTimeAndBoostedCredits(uint256,uint256,uint256,address,uint256)"(
+      cardId: BigNumberish,
+      openTime: BigNumberish,
+      boostedCredits: BigNumberish,
+      additionalTokenAddress: string,
+      additionalValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    addNewSecondaryPayment(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "addNewSecondaryPayment(uint256,address,uint256)"(
+      cardId: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    changeSecondaryPayment(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "changeSecondaryPayment(uint256,uint256,address,uint256,bool)"(
+      cardId: BigNumberish,
+      index: BigNumberish,
+      additionalSecondaryTokenAddress: string,
+      additionalSecondaryValue: BigNumberish,
+      isActive: boolean,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    getCardPriceV2(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getCardPriceV2(uint256)"(
+      cardId: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     earned(
@@ -1000,24 +2593,70 @@ export class SalePool extends Contract {
 
     "exit()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    redeem(
+    redeemV2(
       card: BigNumberish,
-      overrides?: Overrides
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
-    "redeem(uint256)"(
+    "redeemV2(uint256,address)"(
       card: BigNumberish,
-      overrides?: Overrides
+      _paymentTokenAddress: string,
+      overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
-    getProduction(
-      _stacked: BigNumberish,
+    getSalesLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "getSalesLength()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "getProduction(uint256)"(
-      _stacked: BigNumberish,
+    getSales(
+      _start: BigNumberish,
+      _end: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getSales(uint256,uint256)"(
+      _start: BigNumberish,
+      _end: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    changeSaleFee(
+      _newFee: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "changeSaleFee(uint256)"(
+      _newFee: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    sellCredits(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "sellCredits(uint256,address,uint256)"(
+      _creditsAmount: BigNumberish,
+      _tokenAddress: string,
+      _tokensPerCredit: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setPoints(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setPoints(address[],uint256[])"(
+      _addresses: string[],
+      _balances: BigNumberish[],
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }

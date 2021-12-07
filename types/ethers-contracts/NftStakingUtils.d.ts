@@ -19,112 +19,125 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface GenesisPoolInterface extends ethers.utils.Interface {
+interface NftStakingUtilsInterface extends ethers.utils.Interface {
   functions: {
-    "balanceOf(address)": FunctionFragment;
-    "cards(uint256)": FunctionFragment;
+    "getBlockNumber()": FunctionFragment;
+    "goatCards(uint256)": FunctionFragment;
+    "higherTierCards(uint256)": FunctionFragment;
+    "impl()": FunctionFragment;
     "isOwner()": FunctionFragment;
-    "lastUpdateTime(address)": FunctionFragment;
-    "meme()": FunctionFragment;
-    "memes()": FunctionFragment;
+    "lowerTierCards(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
-    "points(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
+    "setImplementation(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "addCard(uint256,uint256)": FunctionFragment;
-    "earned(address)": FunctionFragment;
-    "stake(uint256)": FunctionFragment;
-    "withdraw(uint256)": FunctionFragment;
-    "exit()": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
+    "setGoatCards(uint256[],uint256[])": FunctionFragment;
+    "setHigherTierCards(uint256[],uint256[])": FunctionFragment;
+    "setLowerTierCards(uint256[],uint256[])": FunctionFragment;
+    "getCardPrices(uint256[])": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "cards", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "getBlockNumber",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "goatCards",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "higherTierCards",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "impl", values?: undefined): string;
   encodeFunctionData(functionFragment: "isOwner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "lastUpdateTime",
-    values: [string]
+    functionFragment: "lowerTierCards",
+    values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "meme", values?: undefined): string;
-  encodeFunctionData(functionFragment: "memes", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(functionFragment: "points", values: [string]): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
+    functionFragment: "setImplementation",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "addCard",
-    values: [BigNumberish, BigNumberish]
+    functionFragment: "setGoatCards",
+    values: [BigNumberish[], BigNumberish[]]
   ): string;
-  encodeFunctionData(functionFragment: "earned", values: [string]): string;
-  encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [BigNumberish]
+    functionFragment: "setHigherTierCards",
+    values: [BigNumberish[], BigNumberish[]]
   ): string;
-  encodeFunctionData(functionFragment: "exit", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "redeem",
-    values: [BigNumberish]
+    functionFragment: "setLowerTierCards",
+    values: [BigNumberish[], BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCardPrices",
+    values: [BigNumberish[]]
   ): string;
 
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "cards", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getBlockNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "goatCards", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "higherTierCards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "impl", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "lastUpdateTime",
+    functionFragment: "lowerTierCards",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "meme", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "memes", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "points", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply",
+    functionFragment: "setImplementation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "addCard", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setGoatCards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setHigherTierCards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setLowerTierCards",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCardPrices",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "CardAdded(uint256,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Redeemed(address,uint256)": EventFragment;
-    "Staked(address,uint256)": EventFragment;
-    "Withdrawn(address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "CardAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Redeemed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
 
-export class GenesisPool extends Contract {
+export class NftStakingUtils extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -135,35 +148,59 @@ export class GenesisPool extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: GenesisPoolInterface;
+  interface: NftStakingUtilsInterface;
 
   functions: {
-    balanceOf(
-      account: string,
+    getBlockNumber(
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
 
-    "balanceOf(address)"(
-      account: string,
+    "getBlockNumber()"(
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
 
-    cards(
+    goatCards(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
 
-    "cards(uint256)"(
+    "goatCards(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
+    }>;
+
+    higherTierCards(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    "higherTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: BigNumber;
+    }>;
+
+    impl(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    "impl()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
     }>;
 
     /**
@@ -184,42 +221,18 @@ export class GenesisPool extends Contract {
       0: boolean;
     }>;
 
-    lastUpdateTime(
-      arg0: string,
+    lowerTierCards(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
     }>;
 
-    "lastUpdateTime(address)"(
-      arg0: string,
+    "lowerTierCards(uint256)"(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
       0: BigNumber;
-    }>;
-
-    meme(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: string;
-    }>;
-
-    "meme()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: string;
-    }>;
-
-    memes(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: string;
-    }>;
-
-    "memes()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: string;
     }>;
 
     /**
@@ -240,20 +253,6 @@ export class GenesisPool extends Contract {
       0: string;
     }>;
 
-    points(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
-    "points(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
-
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
      */
@@ -264,17 +263,15 @@ export class GenesisPool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-    totalSupply(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
+    setImplementation(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-    "totalSupply()"(
-      overrides?: CallOverrides
-    ): Promise<{
-      0: BigNumber;
-    }>;
+    "setImplementation(address)"(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -292,80 +289,83 @@ export class GenesisPool extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    setGoatCards(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "setGoatCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    earned(
-      account: string,
+    setHigherTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setHigherTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setLowerTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setLowerTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    getCardPrices(
+      _ids: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<{
-      0: BigNumber;
+      res: BigNumber[];
+      0: BigNumber[];
     }>;
 
-    "earned(address)"(
-      account: string,
+    "getCardPrices(uint256[])"(
+      _ids: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<{
-      0: BigNumber;
+      res: BigNumber[];
+      0: BigNumber[];
     }>;
-
-    stake(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "stake(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "withdraw(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    exit(overrides?: Overrides): Promise<ContractTransaction>;
-
-    "exit()"(overrides?: Overrides): Promise<ContractTransaction>;
-
-    redeem(
-      card: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "redeem(uint256)"(
-      card: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
   };
 
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+  getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "balanceOf(address)"(
-    account: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  "getBlockNumber()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  cards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+  goatCards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
-  "cards(uint256)"(
+  "goatCards(uint256)"(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  higherTierCards(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "higherTierCards(uint256)"(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  impl(overrides?: CallOverrides): Promise<string>;
+
+  "impl()"(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Returns true if the caller is the current owner.
@@ -377,20 +377,15 @@ export class GenesisPool extends Contract {
    */
   "isOwner()"(overrides?: CallOverrides): Promise<boolean>;
 
-  lastUpdateTime(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "lastUpdateTime(address)"(
-    arg0: string,
+  lowerTierCards(
+    arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  meme(overrides?: CallOverrides): Promise<string>;
-
-  "meme()"(overrides?: CallOverrides): Promise<string>;
-
-  memes(overrides?: CallOverrides): Promise<string>;
-
-  "memes()"(overrides?: CallOverrides): Promise<string>;
+  "lowerTierCards(uint256)"(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   /**
    * Returns the address of the current owner.
@@ -402,13 +397,6 @@ export class GenesisPool extends Contract {
    */
   "owner()"(overrides?: CallOverrides): Promise<string>;
 
-  points(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "points(address)"(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   /**
    * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
    */
@@ -419,9 +407,15 @@ export class GenesisPool extends Contract {
    */
   "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
-  totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+  setImplementation(
+    _newImpl: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+  "setImplementation(address)"(
+    _newImpl: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   /**
    * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -439,73 +433,80 @@ export class GenesisPool extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  addCard(
-    cardId: BigNumberish,
-    amount: BigNumberish,
+  setGoatCards(
+    _ids: BigNumberish[],
+    _boosts: BigNumberish[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "addCard(uint256,uint256)"(
-    cardId: BigNumberish,
-    amount: BigNumberish,
+  "setGoatCards(uint256[],uint256[])"(
+    _ids: BigNumberish[],
+    _boosts: BigNumberish[],
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+  setHigherTierCards(
+    _ids: BigNumberish[],
+    _prices: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "earned(address)"(
-    account: string,
+  "setHigherTierCards(uint256[],uint256[])"(
+    _ids: BigNumberish[],
+    _prices: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setLowerTierCards(
+    _ids: BigNumberish[],
+    _prices: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setLowerTierCards(uint256[],uint256[])"(
+    _ids: BigNumberish[],
+    _prices: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  getCardPrices(
+    _ids: BigNumberish[],
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber[]>;
 
-  stake(
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "stake(uint256)"(
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  withdraw(
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "withdraw(uint256)"(
-    amount: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  exit(overrides?: Overrides): Promise<ContractTransaction>;
-
-  "exit()"(overrides?: Overrides): Promise<ContractTransaction>;
-
-  redeem(
-    card: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "redeem(uint256)"(
-    card: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
+  "getCardPrices(uint256[])"(
+    _ids: BigNumberish[],
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
 
   callStatic: {
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "getBlockNumber()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    cards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "cards(uint256)"(
+    goatCards(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    "goatCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    higherTierCards(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "higherTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    impl(overrides?: CallOverrides): Promise<string>;
+
+    "impl()"(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -517,20 +518,15 @@ export class GenesisPool extends Contract {
      */
     "isOwner()"(overrides?: CallOverrides): Promise<boolean>;
 
-    lastUpdateTime(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "lastUpdateTime(address)"(
-      arg0: string,
+    lowerTierCards(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    meme(overrides?: CallOverrides): Promise<string>;
-
-    "meme()"(overrides?: CallOverrides): Promise<string>;
-
-    memes(overrides?: CallOverrides): Promise<string>;
-
-    "memes()"(overrides?: CallOverrides): Promise<string>;
+    "lowerTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the address of the current owner.
@@ -542,13 +538,6 @@ export class GenesisPool extends Contract {
      */
     "owner()"(overrides?: CallOverrides): Promise<string>;
 
-    points(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "points(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
      */
@@ -559,9 +548,15 @@ export class GenesisPool extends Contract {
      */
     "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+    setImplementation(
+      _newImpl: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "setImplementation(address)"(
+      _newImpl: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -579,80 +574,88 @@ export class GenesisPool extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    setGoatCards(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "setGoatCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "earned(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    stake(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    "stake(uint256)"(
-      amount: BigNumberish,
+    setHigherTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    "withdraw(uint256)"(
-      amount: BigNumberish,
+    "setHigherTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    exit(overrides?: CallOverrides): Promise<void>;
-
-    "exit()"(overrides?: CallOverrides): Promise<void>;
-
-    redeem(card: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    "redeem(uint256)"(
-      card: BigNumberish,
+    setLowerTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    "setLowerTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    getCardPrices(
+      _ids: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
+    "getCardPrices(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
   };
 
   filters: {
-    CardAdded(card: null, points: null): EventFilter;
-
     OwnershipTransferred(
       previousOwner: string | null,
       newOwner: string | null
     ): EventFilter;
-
-    Redeemed(user: string | null, amount: null): EventFilter;
-
-    Staked(user: string | null, amount: null): EventFilter;
-
-    Withdrawn(user: string | null, amount: null): EventFilter;
   };
 
   estimateGas: {
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    getBlockNumber(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "getBlockNumber()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    cards(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "cards(uint256)"(
+    goatCards(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    "goatCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    higherTierCards(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "higherTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    impl(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "impl()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -664,20 +667,15 @@ export class GenesisPool extends Contract {
      */
     "isOwner()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    lastUpdateTime(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "lastUpdateTime(address)"(
-      arg0: string,
+    lowerTierCards(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    meme(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "meme()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    memes(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "memes()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "lowerTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the address of the current owner.
@@ -689,13 +687,6 @@ export class GenesisPool extends Contract {
      */
     "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    points(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "points(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
      */
@@ -706,9 +697,15 @@ export class GenesisPool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
 
-    totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
+    setImplementation(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "setImplementation(address)"(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -726,71 +723,83 @@ export class GenesisPool extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    setGoatCards(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "setGoatCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    earned(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    setHigherTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "earned(address)"(
-      account: string,
+    "setHigherTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setLowerTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setLowerTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    getCardPrices(
+      _ids: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    stake(amount: BigNumberish, overrides?: Overrides): Promise<BigNumber>;
-
-    "stake(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    withdraw(amount: BigNumberish, overrides?: Overrides): Promise<BigNumber>;
-
-    "withdraw(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    exit(overrides?: Overrides): Promise<BigNumber>;
-
-    "exit()"(overrides?: Overrides): Promise<BigNumber>;
-
-    redeem(card: BigNumberish, overrides?: Overrides): Promise<BigNumber>;
-
-    "redeem(uint256)"(
-      card: BigNumberish,
-      overrides?: Overrides
+    "getCardPrices(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    balanceOf(
-      account: string,
+    getBlockNumber(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "getBlockNumber()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "balanceOf(address)"(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    cards(
+    goatCards(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "cards(uint256)"(
+    "goatCards(uint256)"(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    higherTierCards(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "higherTierCards(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    impl(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "impl()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Returns true if the caller is the current owner.
@@ -802,23 +811,15 @@ export class GenesisPool extends Contract {
      */
     "isOwner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    lastUpdateTime(
-      arg0: string,
+    lowerTierCards(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "lastUpdateTime(address)"(
-      arg0: string,
+    "lowerTierCards(uint256)"(
+      arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    meme(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "meme()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    memes(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "memes()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Returns the address of the current owner.
@@ -830,16 +831,6 @@ export class GenesisPool extends Contract {
      */
     "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    points(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "points(address)"(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     /**
      * Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.
      */
@@ -850,9 +841,15 @@ export class GenesisPool extends Contract {
      */
     "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    setImplementation(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    "setImplementation(address)"(
+      _newImpl: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.
@@ -870,60 +867,50 @@ export class GenesisPool extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    addCard(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    setGoatCards(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "addCard(uint256,uint256)"(
-      cardId: BigNumberish,
-      amount: BigNumberish,
+    "setGoatCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _boosts: BigNumberish[],
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    earned(
-      account: string,
+    setHigherTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setHigherTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setLowerTierCards(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setLowerTierCards(uint256[],uint256[])"(
+      _ids: BigNumberish[],
+      _prices: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    getCardPrices(
+      _ids: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "earned(address)"(
-      account: string,
+    "getCardPrices(uint256[])"(
+      _ids: BigNumberish[],
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    stake(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "stake(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "withdraw(uint256)"(
-      amount: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    exit(overrides?: Overrides): Promise<PopulatedTransaction>;
-
-    "exit()"(overrides?: Overrides): Promise<PopulatedTransaction>;
-
-    redeem(
-      card: BigNumberish,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "redeem(uint256)"(
-      card: BigNumberish,
-      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }

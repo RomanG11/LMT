@@ -1323,6 +1323,7 @@ contract TokenWrapper {
 
 interface ISalePoolUtils {
   function getMinStake() external pure returns(uint);
+  function getMaxStake() external pure returns(uint);
   function getProduction(uint _stacked) external pure returns(uint);
 }
 
@@ -1340,7 +1341,7 @@ contract SalePool is TokenWrapper, Ownable {
   event Redeemed(address indexed user, uint256 amount);
 
   modifier updateReward(address account) {
-    if (account != address(0)) {
+    if(account != address(0)) {
       points[account] = earned(account);
       lastUpdateTime[account] = block.timestamp;
     }
@@ -1365,7 +1366,7 @@ contract SalePool is TokenWrapper, Ownable {
   function stake(uint256 amount) override public updateReward(msg.sender) {
     uint endBalance = balanceOf(msg.sender).add(amount);
     require(endBalance >= utils.getMinStake(), "min stake - 300 LMT");
-    require(endBalance <= 1000000e18, "total stake cannot be more 1 million LMT");
+    require(endBalance <= utils.getMaxStake(), "total stake cannot be more 1 million LMT");
     super.stake(amount);
     emit Staked(msg.sender, amount);
   }

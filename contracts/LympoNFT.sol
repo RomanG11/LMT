@@ -1038,7 +1038,7 @@ contract ProxyRegistry {
 contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, MinterRole, WhitelistAdminRole {
 	using Strings for string;
 
-	address proxyRegistryAddress;
+// 	address proxyRegistryAddress;
 	uint256 private _currentTokenID = 0;
 	mapping(uint256 => address) public creators;
 	mapping(uint256 => uint256) public tokenSupply;
@@ -1050,12 +1050,10 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 
 	constructor(
 		string memory _name,
-		string memory _symbol,
-		address _proxyRegistryAddress
+		string memory _symbol
 	) public {
 		name = _name;
 		symbol = _symbol;
-		proxyRegistryAddress = _proxyRegistryAddress;
 	}
 
 	function removeWhitelistAdmin(address account) public onlyOwner {
@@ -1120,7 +1118,7 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 			emit URI(_uri, _id);
 		}
 
-		if (_initialSupply != 0) _mint(msg.sender, _id, _initialSupply, _data);
+		if (_initialSupply != 0) _mint(owner(), _id, _initialSupply, _data);
 		tokenSupply[_id] = _initialSupply;
 		tokenMaxSupply[_id] = _maxSupply;
 		return _id;
@@ -1149,10 +1147,10 @@ contract ERC1155Tradable is ERC1155, ERC1155MintBurn, ERC1155Metadata, Ownable, 
 	 */
 	function isApprovedForAll(address _owner, address _operator) override public view returns (bool isOperator) {
 		// Whitelist OpenSea proxy contract for easy trading.
-		ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
-		if (address(proxyRegistry.proxies(_owner)) == _operator) {
-			return true;
-		}
+// 		ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
+// 		if (address(proxyRegistry.proxies(_owner)) == _operator) {
+// 			return true;
+// 		}
 
 		return ERC1155.isApprovedForAll(_owner, _operator);
 	}
@@ -1188,8 +1186,8 @@ contract LympoNFT is ERC1155Tradable {
   mapping(uint => bool) public mintOwnableBlocked;
 
 	// _proxyRegistryAddress - 0xa5409ec958c83c3f309868babaca7c86dcb077c1
-	constructor(address _proxyRegistryAddress) public ERC1155Tradable("Lympo NFT", "LYMPO", _proxyRegistryAddress) {
-		_setBaseMetadataURI("https://api.lympo.io/pools/assets/");
+	constructor() public ERC1155Tradable("Lympo NFT", "LYMPO") {
+		_setBaseMetadataURI("https://api.lympo.io/pools/assets/polygon/");
 	}
 
   /**
@@ -1219,3 +1217,46 @@ contract LympoNFT is ERC1155Tradable {
 		return "https://api.lympo.io/pools/lympo";
 	}
 }
+
+interface ITest {
+    function create(
+		uint256 _maxSupply,
+		uint256 _initialSupply,
+		string calldata _uri,
+		bytes calldata _data
+	) external;
+}
+
+contract Test {
+
+  function airdrop(address[] calldata addrs, uint256 tokenId) public {
+  }
+    
+    address public owner;
+    
+    constructor() public {
+        owner = msg.sender;
+    }
+    
+    function doTmth() public {
+        require(msg.sender == owner, "onlyOwner");
+        ITest iTest = ITest(0x849178B18477D860a058E62b39Dd7d4375e9470d);
+        iTest.create(1001, 100, "", "0x");
+        iTest.create(501, 50, "", "0x");
+        iTest.create(101, 10, "", "0x");
+        iTest.create(26, 5, "", "0x");
+        iTest.create(6, 3, "", "0x");
+    }
+    
+    function doTmthWithGOAT() public {
+        require(msg.sender == owner, "onlyOwner");
+        ITest iTest = ITest(0x849178B18477D860a058E62b39Dd7d4375e9470d);
+        iTest.create(1001, 100, "", "0x");
+        iTest.create(501, 50, "", "0x");
+        iTest.create(101, 10, "", "0x");
+        iTest.create(26, 5, "", "0x");
+        iTest.create(6, 3, "", "0x");
+        iTest.create(1, 1, "", "0x");
+    }
+}
+

@@ -33,6 +33,7 @@ interface LympoNftInterface extends ethers.utils.Interface {
     "isWhitelistAdmin(address)": FunctionFragment;
     "maxSupply(uint256)": FunctionFragment;
     "mint(address,uint256,uint256,bytes)": FunctionFragment;
+    "mintOwnableBlocked(uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "removeMinter(address)": FunctionFragment;
@@ -51,6 +52,8 @@ interface LympoNftInterface extends ethers.utils.Interface {
     "totalSupply(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
+    "mintOwnable(address,uint256,uint256,bytes)": FunctionFragment;
+    "blockMintOwnable(uint256[])": FunctionFragment;
     "contractURI()": FunctionFragment;
   };
 
@@ -92,6 +95,10 @@ interface LympoNftInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "mint",
     values: [string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintOwnableBlocked",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -154,6 +161,14 @@ interface LympoNftInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
   encodeFunctionData(
+    functionFragment: "mintOwnable",
+    values: [string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "blockMintOwnable",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "contractURI",
     values?: undefined
   ): string;
@@ -182,6 +197,10 @@ interface LympoNftInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "maxSupply", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "mintOwnableBlocked",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -242,6 +261,14 @@ interface LympoNftInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "mintOwnable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "blockMintOwnable",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "contractURI",
     data: BytesLike
@@ -521,6 +548,20 @@ export class LympoNft extends Contract {
       _data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    mintOwnableBlocked(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
+
+    "mintOwnableBlocked(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<{
+      0: boolean;
+    }>;
 
     name(
       overrides?: CallOverrides
@@ -822,6 +863,46 @@ export class LympoNft extends Contract {
       0: string;
     }>;
 
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    mintOwnable(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    "mintOwnable(address,uint256,uint256,bytes)"(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    blockMintOwnable(
+      _ids: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "blockMintOwnable(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     contractURI(
       overrides?: CallOverrides
     ): Promise<{
@@ -1025,6 +1106,16 @@ export class LympoNft extends Contract {
     _data: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
+
+  mintOwnableBlocked(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "mintOwnableBlocked(uint256)"(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -1273,6 +1364,46 @@ export class LympoNft extends Contract {
    */
   "uri(uint256)"(_id: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  /**
+   * Mints some amount of tokens to an address
+   * @param _data Data to pass if receiver is contract
+   * @param _id Token ID to mint
+   * @param _quantity Amount of tokens to mint
+   * @param _to Address of the future owner of the token
+   */
+  mintOwnable(
+    _to: string,
+    _id: BigNumberish,
+    _quantity: BigNumberish,
+    _data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Mints some amount of tokens to an address
+   * @param _data Data to pass if receiver is contract
+   * @param _id Token ID to mint
+   * @param _quantity Amount of tokens to mint
+   * @param _to Address of the future owner of the token
+   */
+  "mintOwnable(address,uint256,uint256,bytes)"(
+    _to: string,
+    _id: BigNumberish,
+    _quantity: BigNumberish,
+    _data: BytesLike,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  blockMintOwnable(
+    _ids: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "blockMintOwnable(uint256[])"(
+    _ids: BigNumberish[],
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   contractURI(overrides?: CallOverrides): Promise<string>;
 
   "contractURI()"(overrides?: CallOverrides): Promise<string>;
@@ -1465,6 +1596,16 @@ export class LympoNft extends Contract {
       _data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    mintOwnableBlocked(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "mintOwnableBlocked(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1714,6 +1855,46 @@ export class LympoNft extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    mintOwnable(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    "mintOwnable(address,uint256,uint256,bytes)"(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    blockMintOwnable(
+      _ids: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "blockMintOwnable(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     contractURI(overrides?: CallOverrides): Promise<string>;
 
     "contractURI()"(overrides?: CallOverrides): Promise<string>;
@@ -1945,6 +2126,16 @@ export class LympoNft extends Contract {
       _quantity: BigNumberish,
       _data: BytesLike,
       overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    mintOwnableBlocked(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "mintOwnableBlocked(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2195,6 +2386,46 @@ export class LympoNft extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    mintOwnable(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    "mintOwnable(address,uint256,uint256,bytes)"(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    blockMintOwnable(
+      _ids: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "blockMintOwnable(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     contractURI(overrides?: CallOverrides): Promise<BigNumber>;
 
     "contractURI()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -2399,6 +2630,16 @@ export class LympoNft extends Contract {
       _quantity: BigNumberish,
       _data: BytesLike,
       overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    mintOwnableBlocked(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "mintOwnableBlocked(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -2657,6 +2898,46 @@ export class LympoNft extends Contract {
     "uri(uint256)"(
       _id: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    mintOwnable(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Mints some amount of tokens to an address
+     * @param _data Data to pass if receiver is contract
+     * @param _id Token ID to mint
+     * @param _quantity Amount of tokens to mint
+     * @param _to Address of the future owner of the token
+     */
+    "mintOwnable(address,uint256,uint256,bytes)"(
+      _to: string,
+      _id: BigNumberish,
+      _quantity: BigNumberish,
+      _data: BytesLike,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    blockMintOwnable(
+      _ids: BigNumberish[],
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "blockMintOwnable(uint256[])"(
+      _ids: BigNumberish[],
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     contractURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;

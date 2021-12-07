@@ -27,6 +27,8 @@ interface Ierc20Interface extends ethers.utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "symbol()": FunctionFragment;
+    "decimals()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -50,6 +52,8 @@ interface Ierc20Interface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -63,6 +67,8 @@ interface Ierc20Interface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -202,6 +208,30 @@ export class Ierc20 extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
+
+    symbol(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    "symbol()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: string;
+    }>;
+
+    decimals(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: number;
+    }>;
+
+    "decimals()"(
+      overrides?: CallOverrides
+    ): Promise<{
+      0: number;
+    }>;
   };
 
   /**
@@ -301,6 +331,14 @@ export class Ierc20 extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  symbol(overrides?: CallOverrides): Promise<string>;
+
+  "symbol()"(overrides?: CallOverrides): Promise<string>;
+
+  decimals(overrides?: CallOverrides): Promise<number>;
+
+  "decimals()"(overrides?: CallOverrides): Promise<number>;
+
   callStatic: {
     /**
      * Returns the amount of tokens in existence.
@@ -398,6 +436,14 @@ export class Ierc20 extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    symbol(overrides?: CallOverrides): Promise<string>;
+
+    "symbol()"(overrides?: CallOverrides): Promise<string>;
+
+    decimals(overrides?: CallOverrides): Promise<number>;
+
+    "decimals()"(overrides?: CallOverrides): Promise<number>;
   };
 
   filters: {
@@ -507,6 +553,14 @@ export class Ierc20 extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
+
+    symbol(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -609,5 +663,13 @@ export class Ierc20 extends Contract {
       amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
+
+    symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "decimals()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
